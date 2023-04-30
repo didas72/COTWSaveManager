@@ -75,7 +75,10 @@ namespace COTWSaveManager
             Properties.Settings.Default.Save();
             UpdateSaveList();
 
-            MessageBox.Show("This program cannot generate the save files on it's own.\nPlease launch theHunter to create the save files.",
+            //MessageBox.Show("This program cannot generate the save files on it's own.\nPlease launch theHunter to create the save files.",
+            //    "Launch theHunter", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            MessageBox.Show("New save created successfully.\nPlease launch theHunter and click 'New Game' to initialize save files.",
                 "Launch theHunter", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
