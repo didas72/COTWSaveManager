@@ -1,0 +1,18 @@
+﻿Planned features:
+-[DONE]	Preserving of progress (see below)
+-[HIGH] Copy/Duplicate button
+-[HIGH] Backups
+-[LOW]  Add check for updates button (Github API check https://api.github.com/repos/didas72/COTWSaveManager/releases/latest)
+
+
+Toggleable progress keeping on create:
+-settings ('theHunter Call of the Wild' folder)
+-achievements/mission progress (achievements_adf, achievements_progress_missiondata_adf, missions_missiondata_adf)
+-fog of war (adf_fog_of_war_data_faster_#)
+-found icons (found_icons_#)
+-found need zones (found_need_zones_adf)
+-dog profile (thp_dog_profile_adf)
+
+ALWAYS PRESERVE (if present):
+-playerinformation_adf to skip license agreement
+-thp_player_profile_adf to avoid full save reset

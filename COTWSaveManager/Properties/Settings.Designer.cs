@@ -58,5 +58,89 @@ namespace COTWSaveManager.Properties {
                 this["storePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool keepSettings {
+            get {
+                return ((bool)(this["keepSettings"]));
+            }
+            set {
+                this["keepSettings"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool keepFOW {
+            get {
+                return ((bool)(this["keepFOW"]));
+            }
+            set {
+                this["keepFOW"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool keepAchieves {
+            get {
+                return ((bool)(this["keepAchieves"]));
+            }
+            set {
+                this["keepAchieves"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool keepIcons {
+            get {
+                return ((bool)(this["keepIcons"]));
+            }
+            set {
+                this["keepIcons"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool keepNeedZ {
+            get {
+                return ((bool)(this["keepNeedZ"]));
+            }
+            set {
+                this["keepNeedZ"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool keepDog {
+            get {
+                return ((bool)(this["keepDog"]));
+            }
+            set {
+                this["keepDog"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool experimentalWarnShown {
+            get {
+                return ((bool)(this["experimentalWarnShown"]));
+            }
+            set {
+                this["experimentalWarnShown"] = value;
+            }
+        }
     }
 }

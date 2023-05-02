@@ -1,0 +1,10 @@
+﻿Update log:
+
+v1.2:
+- Added preserving of progress (optional)
+
+v1.1:
+- Updated create save info message to clarify that the save is created and the game can be run
+
+v1.0:
+- Release

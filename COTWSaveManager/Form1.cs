@@ -1,18 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
+
+using COTWSaveManager.Properties;
 
 namespace COTWSaveManager
 {
     public partial class MainForm : Form
     {
+        public bool KeepSettings { get => keepSettingsBox.Checked; set => keepSettingsBox.Checked = value; }
+        public bool KeepAchieves { get => keepAchievesBox.Checked; set => keepAchievesBox.Checked = value; }
+        public bool KeepFOW { get => keepFOWBox.Checked; set => keepFOWBox.Checked = value; }
+        public bool KeepIcons { get => keepIconsBox.Checked; set => keepIconsBox.Checked = value; }
+        public bool KeepNeedZ { get => keepNeedZBox.Checked; set => keepNeedZBox.Checked = value; }
+        public bool KeepDog { get => keepDogBox.Checked; set => keepDogBox.Checked = value; }
+
+
+
         public MainForm()
         {
             InitializeComponent();
@@ -22,7 +27,7 @@ namespace COTWSaveManager
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            SaveHelper.InitSettings();
+            SaveHelper.InitSettings(this);
             UpdateSaveList();
         }
 
@@ -60,8 +65,8 @@ namespace COTWSaveManager
 
                 return;
             }
-            if (SaveNameInput.Text == Properties.Settings.Default.activeSave ||
-                Directory.GetFiles(Properties.Settings.Default.storePath, "*.zip")
+            if (SaveNameInput.Text == Settings.Default.activeSave ||
+                Directory.GetFiles(Settings.Default.storePath, "*.zip")
                 .Any((string path) => Path.GetFileNameWithoutExtension(path) == SaveNameInput.Text))
             {
                 MessageBox.Show("Save name cannot be repeated.", "Repeated save name",
@@ -70,16 +75,16 @@ namespace COTWSaveManager
                 return;
             }
 
-            SaveHelper.StoreActiveSave();
-            Properties.Settings.Default.activeSave = SaveNameInput.Text;
-            Properties.Settings.Default.Save();
+            SaveHelper.AddNewSaveWithCopy(SaveNameInput.Text);
             UpdateSaveList();
 
-            //MessageBox.Show("This program cannot generate the save files on it's own.\nPlease launch theHunter to create the save files.",
-            //    "Launch theHunter", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            MessageBox.Show("New save created successfully.\nPlease launch theHunter and click 'New Game' to initialize save files.",
-                "Launch theHunter", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (SaveHelper.KeepAny())
+                MessageBox.Show("New save created successfully.\nSome files were kept. Just press 'Continue' or 'Change Reserve' to play.",
+                    "Launch theHunter", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+                MessageBox.Show("New save created successfully.\nPlease launch theHunter and click 'New Game' to initialize save files.",
+                    "Launch theHunter", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void RenameButton_Click(object sender, EventArgs e)
@@ -98,8 +103,8 @@ namespace COTWSaveManager
 
                 return;
             }
-            if (SaveNameInput.Text == Properties.Settings.Default.activeSave ||
-                Directory.GetFiles(Properties.Settings.Default.storePath, "*.zip")
+            if (SaveNameInput.Text == Settings.Default.activeSave ||
+                Directory.GetFiles(Settings.Default.storePath, "*.zip")
                 .Any((string path) => Path.GetFileNameWithoutExtension(path) == SaveNameInput.Text))
             {
                 MessageBox.Show("Save name cannot be repeated.", "Repeated save name",
@@ -109,15 +114,9 @@ namespace COTWSaveManager
             }
             
             if (SaveList.SelectedIndex == 0)
-            {
-                Properties.Settings.Default.activeSave = SaveNameInput.Text;
-                Properties.Settings.Default.Save();
-            }
+                SaveHelper.RenameActiveSave(SaveNameInput.Text);
             else
-            {
-                File.Move(Path.Combine(Properties.Settings.Default.storePath, (string)SaveList.Items[SaveList.SelectedIndex] + ".zip"),
-                        Path.Combine(Properties.Settings.Default.storePath, SaveNameInput.Text + ".zip"));
-            }
+                SaveHelper.RenameStoredSave((string)SaveList.Items[SaveList.SelectedIndex], SaveNameInput.Text);
 
             UpdateSaveList();
         }
@@ -153,6 +152,12 @@ namespace COTWSaveManager
             }
         }
 
+
+
+        private void OnCopySettingsChange(object sender, EventArgs e)
+        {
+            SaveHelper.UpdateCopySettings(this);
+        }
 
 
 
