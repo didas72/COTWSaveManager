@@ -25,12 +25,17 @@ namespace COTWSaveManager
 
 
 
+        //Load
         private void MainForm_Load(object sender, EventArgs e)
         {
             SaveHelper.InitSettings(this);
-            UpdateSaveList();
+            UpdateSaveLists();
+            UpdateBackupList();
         }
 
+
+
+        //Saves
         private void SetActiveButton_Click(object sender, EventArgs e)
         {
             if (SaveList.SelectedIndex < 0 || SaveList.SelectedIndex >= SaveList.Items.Count)
@@ -53,7 +58,7 @@ namespace COTWSaveManager
             SaveHelper.StoreActiveSave();
             SaveHelper.ActivateStoredSave(saveName);
 
-            UpdateSaveList();
+            UpdateSaveLists();
         }
 
         private void CreateButton_Click(object sender, EventArgs e)
@@ -76,7 +81,7 @@ namespace COTWSaveManager
             }
 
             SaveHelper.AddNewSaveWithCopy(SaveNameInput.Text);
-            UpdateSaveList();
+            UpdateSaveLists();
 
 
             if (SaveHelper.KeepAny())
@@ -118,7 +123,7 @@ namespace COTWSaveManager
             else
                 SaveHelper.RenameStoredSave((string)SaveList.Items[SaveList.SelectedIndex], SaveNameInput.Text);
 
-            UpdateSaveList();
+            UpdateSaveLists();
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
@@ -148,23 +153,105 @@ namespace COTWSaveManager
             if (res == DialogResult.Yes)
             { 
                 SaveHelper.DeleteStoredSave(saveName);
-                UpdateSaveList();
+                UpdateSaveLists();
             }
         }
 
 
 
+        //Backups
+        private void BackupButton_Click(object sender, EventArgs e)
+        {
+            if (bckpSaveList.SelectedIndex < 0 || bckpSaveList.SelectedIndex >= bckpSaveList.Items.Count)
+            {
+                MessageBox.Show("Please select a save to backup.", "No save selected",
+                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                return;
+            }
+
+            if (bckpSaveList.SelectedIndex == 0)
+                SaveHelper.BackupActiveSave();
+            else
+                SaveHelper.BackupInactiveSave((string)bckpSaveList.Items[bckpSaveList.SelectedIndex]);
+
+            UpdateBackupList();
+        }
+        private void BackupAllButton_Click(object sender, EventArgs e)
+        {
+            SaveHelper.BackupAllSaves();
+
+            UpdateBackupList();
+        }
+        private void BackupDeleteButton_Click(object sender, EventArgs e)
+        {
+            if (backupList.SelectedIndex < 0 || backupList.SelectedIndex >= backupList.Items.Count)
+            {
+                MessageBox.Show("Please select a backup to delete.", "No backup selected",
+                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                return;
+            }
+
+            SaveHelper.DeleteBackup((string)backupList.Items[backupList.SelectedIndex]);
+
+            UpdateBackupList();
+        }
+
+
+
+        //Settings
         private void OnCopySettingsChange(object sender, EventArgs e)
         {
             SaveHelper.UpdateCopySettings(this);
         }
 
-
-
-        private void UpdateSaveList()
+        private void SetStoreLocationButton_Click(object sender, EventArgs e)
         {
+            folderDialog.SelectedPath = Settings.Default.storePath;
+            folderDialog.ShowNewFolderButton = true;
+            folderDialog.Description = "Select folder to store inactive saves.";
+            DialogResult result = folderDialog.ShowDialog();
+
+            if (result != DialogResult.OK)
+                return;
+
+            try
+            {
+                if (!Directory.Exists(folderDialog.SelectedPath)) 
+                    throw new Exception(); //Just pass it down to the catch part
+            }
+            catch
+            {
+                MessageBox.Show("Could not find the selected folder. Make sure the folder is created.", "Invalid folder", MessageBoxButtons.OK);
+            }
+
+            if (folderDialog.SelectedPath == Settings.Default.storePath)
+                return;
+
+            if (!Utils.HasDirectoryAccess(folderDialog.SelectedPath))
+            {
+                MessageBox.Show("Unable to write to selected folder. Make sure your user has access to the folder.", "Insuficcient permissions", MessageBoxButtons.OK);
+                return;
+            }    
+
+            SaveHelper.MoveStoreDir(folderDialog.SelectedPath);
+        }
+
+
+
+        private void UpdateSaveLists()
+        {
+            string[] saveStrings = SaveHelper.GetSaveList();
             SaveList.Items.Clear();
-            SaveList.Items.AddRange(SaveHelper.GetSaveList());
+            SaveList.Items.AddRange(saveStrings);
+            bckpSaveList.Items.Clear();
+            bckpSaveList.Items.AddRange(saveStrings);
+        }
+        private void UpdateBackupList()
+        {
+            backupList.Items.Clear();
+            backupList.Items.AddRange(SaveHelper.GetBackupList());
         }
     }
 }

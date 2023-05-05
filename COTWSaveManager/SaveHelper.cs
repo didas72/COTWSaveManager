@@ -18,46 +18,52 @@ namespace COTWSaveManager
 
         public static void InitSettings(MainForm caller)
         {
-            if (string.IsNullOrEmpty(Settings.Default.storePath)) //Already initted
-            {
-                InitBasePath();
-                InitStoreDir();
-                Settings.Default.activeSave = "Unnamed save";
+            InitSaveName();
+            InitBasePath();
+            InitStoreDir();
 
-                Settings.Default.Save();
-            }
+            Settings.Default.Save();
 
             InitCopySettings(caller);
 
             finishedInit = true;
         }
+        private static void InitSaveName()
+        {
+            if (!string.IsNullOrEmpty(Settings.Default.activeSave))
+                return;
+
+            Settings.Default.activeSave = "Unnamed save";
+        }
         private static void InitBasePath()
         {
-            if (string.IsNullOrEmpty(Settings.Default.saveBasePath))
+            if (!string.IsNullOrEmpty(Settings.Default.saveBasePath))
+                return;
+
+            //Determine save path
+            string basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Avalanche Studios");
+
+            if (!Directory.Exists(basePath))
             {
-                //Determine save path
-                string basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Avalanche Studios");
+                MessageBox.Show("Make sure the folder 'Avalanche Studios' exists in your documents.", "Could not find save folder.",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                if (!Directory.Exists(basePath))
-                {
-                    //TODO: Handle case
-                    MessageBox.Show("Make sure the folder 'Avalanche Studios' exists in your documents.", "Could not find save folder.",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                    Application.Exit();
-                }
-
-                if (Directory.Exists(Path.Combine(basePath, "Epic Games Store")))
-                    basePath = Path.Combine(basePath, "Epic Games Store");
-
-                Settings.Default.saveBasePath = basePath;
+                //TODO: Replace exit with prompt to select folder
+                Application.Exit();
             }
+
+            if (Directory.Exists(Path.Combine(basePath, "Epic Games Store")))
+                basePath = Path.Combine(basePath, "Epic Games Store");
+
+            Settings.Default.saveBasePath = basePath;
         }
         private static void InitStoreDir()
         {
-            Settings.Default.storePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "COTWSaveManager");
-            
+            if (string.IsNullOrEmpty(Settings.Default.storePath))
+                Settings.Default.storePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "COTWSaveManager");
+
             Directory.CreateDirectory(Settings.Default.storePath);
+            Directory.CreateDirectory(Path.Combine(Settings.Default.storePath, "backups"));
         }
         private static void InitCopySettings(MainForm caller)
         {
@@ -71,6 +77,7 @@ namespace COTWSaveManager
 
 
 
+        //Lists
         public static string[] GetSaveList()
         {
             List<string> ret = new List<string>
@@ -83,31 +90,10 @@ namespace COTWSaveManager
 
             return ret.ToArray();
         }
-        public static void UpdateCopySettings(MainForm caller)
-        {
-            if (!finishedInit)
-                return;
-
-
-            if (!Settings.Default.experimentalWarnShown)
-            {
-                MessageBox.Show("Keeping of previous progress is an experimental feature. It may fail or perform in an unexpected way. Please report any bugs found.",
-                    "Launch theHunter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Settings.Default.experimentalWarnShown = true;
-            }
-
-            Settings.Default.keepSettings = caller.KeepSettings;
-            Settings.Default.keepAchieves = caller.KeepAchieves;
-            Settings.Default.keepFOW = caller.KeepFOW;
-            Settings.Default.keepIcons = caller.KeepIcons;
-            Settings.Default.keepNeedZ = caller.KeepNeedZ;
-            Settings.Default.keepDog = caller.KeepDog;
-
-            Settings.Default.Save();
-        }
 
 
 
+        //Saves
         public static void StoreActiveSave()
         {
             string dest = Path.Combine(Settings.Default.storePath, Settings.Default.activeSave + ".zip");
@@ -229,6 +215,89 @@ namespace COTWSaveManager
 
             DeleteNoCopyFiles(path);
         }
+
+
+
+        //Settings
+        public static void UpdateCopySettings(MainForm caller)
+        {
+            if (!finishedInit)
+                return;
+
+
+            if (!Settings.Default.experimentalWarnShown)
+            {
+                MessageBox.Show("Keeping of previous progress is an experimental feature. It may fail or perform in an unexpected way. Please report any bugs found.",
+                    "Launch theHunter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Settings.Default.experimentalWarnShown = true;
+            }
+
+            Settings.Default.keepSettings = caller.KeepSettings;
+            Settings.Default.keepAchieves = caller.KeepAchieves;
+            Settings.Default.keepFOW = caller.KeepFOW;
+            Settings.Default.keepIcons = caller.KeepIcons;
+            Settings.Default.keepNeedZ = caller.KeepNeedZ;
+            Settings.Default.keepDog = caller.KeepDog;
+
+            Settings.Default.Save();
+        }
+        public static void MoveStoreDir(string newPath)
+        {
+            Utils.MoveDirectoryRecursive(Settings.Default.storePath, newPath);
+
+            Settings.Default.storePath = newPath;
+            Settings.Default.Save();
+        }
+
+
+
+        //Backups
+        public static string[] GetBackupList()
+        {
+            List<string> ret = new List<string>();
+
+            foreach (string path in Directory.GetFiles(Path.Combine(Settings.Default.storePath, "backups"), "*.zip"))
+                ret.Add(Path.GetFileNameWithoutExtension(path));
+
+            return ret.ToArray();
+        }
+        public static void BackupActiveSave()
+        {
+            string dest = Path.Combine(Settings.Default.storePath, "backups",
+                Settings.Default.activeSave + DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss") + ".zip");
+
+            ZipFile.CreateFromDirectory(Settings.Default.saveBasePath, dest, CompressionLevel.Fastest, false, Encoding.Default);
+        }
+        public static void BackupInactiveSave(string saveName)
+        {
+            string src = Path.Combine(Settings.Default.storePath, saveName + ".zip");
+            string dest = Path.Combine(Settings.Default.storePath, "backups",
+                saveName + DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss") + ".zip");
+
+            File.Copy(src, dest);
+        }
+        public static void BackupAllSaves()
+        {
+            BackupActiveSave();
+
+            foreach (string s in Directory.GetFiles(Settings.Default.storePath, "*.zip"))
+            {
+                string saveName = Path.GetFileNameWithoutExtension(s);
+                string dest = Path.Combine(Settings.Default.storePath, "backups",
+                    saveName + DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss") + ".zip");
+                File.Copy(s, dest);
+            }
+        }
+        public static void DeleteBackup(string backupName)
+        {
+            string src = Path.Combine(Settings.Default.storePath, "backups", backupName + ".zip");
+
+            File.Delete(src);
+        }
+        /*public static void RevertToBackup(string backupName)
+        {
+
+        }*/
 
 
 

@@ -1,5 +1,9 @@
 ﻿Update log:
 
+v1.3:
+- Added backups
+- Added adjustable store location
+
 v1.2:
 - Added preserving of progress (optional)
 
