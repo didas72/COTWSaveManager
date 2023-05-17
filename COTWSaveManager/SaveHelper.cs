@@ -73,6 +73,7 @@ namespace COTWSaveManager
             caller.KeepIcons = Settings.Default.keepIcons;
             caller.KeepNeedZ = Settings.Default.keepNeedZ;
             caller.KeepDog = Settings.Default.keepDog;
+            caller.KeepPopulation = Settings.Default.keepPopulation;
         }
 
 
@@ -213,6 +214,13 @@ namespace COTWSaveManager
                 lPath = Path.Combine(path, "thp_dog_profile_adf"); if (File.Exists(lPath)) File.Delete(lPath);
             }
 
+            if (!Settings.Default.keepPopulation)
+            {
+                paths = Directory.GetFiles(path, "animal_population_*");
+                foreach (string s in paths)
+                    File.Delete(s);
+            }
+
             DeleteNoCopyFiles(path);
         }
 
@@ -238,6 +246,7 @@ namespace COTWSaveManager
             Settings.Default.keepIcons = caller.KeepIcons;
             Settings.Default.keepNeedZ = caller.KeepNeedZ;
             Settings.Default.keepDog = caller.KeepDog;
+            Settings.Default.keepPopulation = caller.KeepPopulation;
 
             Settings.Default.Save();
         }
@@ -304,7 +313,8 @@ namespace COTWSaveManager
         public static bool KeepAny()
         {
             return Settings.Default.keepAchieves || Settings.Default.keepDog || Settings.Default.keepFOW ||
-                Settings.Default.keepIcons || Settings.Default.keepNeedZ || Settings.Default.keepSettings;
+                Settings.Default.keepIcons || Settings.Default.keepNeedZ || Settings.Default.keepSettings ||
+                Settings.Default.keepPopulation;
         }
         private static void DeleteNoCopyFiles(string path)
         {
@@ -318,11 +328,11 @@ namespace COTWSaveManager
             * --statistics_adf
             * --reserveworlddata_adf
             * --regions_adf
-            * thp_player_profile_adf (Allows not creasting new game)
+            * thp_player_profile_adf (Allows not creating new game)
             */
 
             string[] patterns = new string[] { 
-                "animal_population_*", "apex_notifications_adf", "codex_seen_status_adf", "collectibles_adf", "contextual_help_adf",
+                "apex_notifications_adf", "codex_seen_status_adf", "collectibles_adf", "contextual_help_adf",
                 "hunting_log_adf", "leaderboard_adf", "regions_adf", "reserveworlddata_adf",
                 "settings_adf", "socialconfig", "statistics_adf", "trophy_lodges_adf", "worlditemsdata_adf"
             };

@@ -142,5 +142,17 @@ namespace COTWSaveManager.Properties {
                 this["experimentalWarnShown"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool keepPopulation {
+            get {
+                return ((bool)(this["keepPopulation"]));
+            }
+            set {
+                this["keepPopulation"] = value;
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace COTWSaveManager
         public bool KeepIcons { get => keepIconsBox.Checked; set => keepIconsBox.Checked = value; }
         public bool KeepNeedZ { get => keepNeedZBox.Checked; set => keepNeedZBox.Checked = value; }
         public bool KeepDog { get => keepDogBox.Checked; set => keepDogBox.Checked = value; }
+        public bool KeepPopulation { get => keepPopulationBox.Checked; set => keepPopulationBox.Checked = value; }
 
 
 

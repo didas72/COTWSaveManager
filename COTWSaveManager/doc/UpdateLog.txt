@@ -1,5 +1,8 @@
 ﻿Update log:
 
+v1.4:
+- Added ability to preserve animal population
+
 v1.3:
 - Added backups
 - Added adjustable store location

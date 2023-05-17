@@ -59,6 +59,7 @@
             this.keepIconsBox = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.folderDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.keepPopulationBox = new System.Windows.Forms.CheckBox();
             Tabs = new System.Windows.Forms.TabControl();
             SavesTab = new System.Windows.Forms.TabPage();
             BackupsTab = new System.Windows.Forms.TabPage();
@@ -287,6 +288,7 @@
             // 
             // experimentalBox
             // 
+            experimentalBox.Controls.Add(this.keepPopulationBox);
             experimentalBox.Controls.Add(this.keepSettingsBox);
             experimentalBox.Controls.Add(this.keepDogBox);
             experimentalBox.Controls.Add(this.keepAchievesBox);
@@ -372,6 +374,17 @@
             this.keepIconsBox.UseVisualStyleBackColor = true;
             this.keepIconsBox.CheckedChanged += new System.EventHandler(this.OnCopySettingsChange);
             // 
+            // keepPopulationBox
+            // 
+            this.keepPopulationBox.AutoSize = true;
+            this.keepPopulationBox.Location = new System.Drawing.Point(5, 157);
+            this.keepPopulationBox.Name = "keepPopulationBox";
+            this.keepPopulationBox.Size = new System.Drawing.Size(136, 17);
+            this.keepPopulationBox.TabIndex = 7;
+            this.keepPopulationBox.Text = "Keep animal population";
+            this.toolTip1.SetToolTip(this.keepPopulationBox, "Preserves dog progress.");
+            this.keepPopulationBox.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -420,6 +433,7 @@
         private System.Windows.Forms.Button BackupDeleteButton;
         private System.Windows.Forms.Button bckpSetActiveButton;
         private System.Windows.Forms.Button BackupAllButton;
+        private System.Windows.Forms.CheckBox keepPopulationBox;
     }
 }
 
