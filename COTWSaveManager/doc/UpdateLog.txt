@@ -1,5 +1,10 @@
 ﻿Update log:
 
+v1.5:
+- Added ability to copy (duplicate) active save
+- Added report bug button
+- Add check for updates button
+
 v1.4:
 - Added ability to preserve animal population
 
