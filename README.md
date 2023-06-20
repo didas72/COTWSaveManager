@@ -1,6 +1,7 @@
 # COTWSaveManager
 
 COTWSaveManager is a simple tool to allow you to keep multiple game saves without having to move the files yourself.
+The mod is also available in Nexus Mods: https://www.nexusmods.com/thehuntercallofthewild/mods/268
 
 # Installation
 
