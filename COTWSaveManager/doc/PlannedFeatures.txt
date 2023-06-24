@@ -1,0 +1,10 @@
+﻿Planned features:
+-[HIGH] Revert to backup
+
+-[DONE] Copy Active button
+-[DONE] Add preserving of animal population
+-[DONE] Backup creation
+-[DONE] Adjustable store dir
+-[DONE]	Preserving of progress (see below)
+-[DONE] Add report bug button
+-[DONE] Add check for updates button (Github API)
