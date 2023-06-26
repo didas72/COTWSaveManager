@@ -1,5 +1,8 @@
 ﻿Update log:
 
+v1.5.2:
+- Patched assembly version not updated.
+
 v1.5.1:
 - Fixed tooltip for preserving of animal population
 
