@@ -58,12 +58,12 @@
             this.KeepNeedZBox = new System.Windows.Forms.CheckBox();
             this.KeepFOWBox = new System.Windows.Forms.CheckBox();
             this.KeepIconsBox = new System.Windows.Forms.CheckBox();
+            this.MiscTab = new System.Windows.Forms.TabPage();
+            this.ReportBugButtom = new System.Windows.Forms.Button();
+            this.ChkUpdateButton = new System.Windows.Forms.Button();
+            this.VersionLabel = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.folderDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.MiscTab = new System.Windows.Forms.TabPage();
-            this.VersionLabel = new System.Windows.Forms.Label();
-            this.ChkUpdateButton = new System.Windows.Forms.Button();
-            this.ReportBugButtom = new System.Windows.Forms.Button();
             Tabs = new System.Windows.Forms.TabControl();
             SavesTab = new System.Windows.Forms.TabPage();
             DeleteButton = new System.Windows.Forms.Button();
@@ -324,7 +324,7 @@
             this.KeepPopulationBox.Size = new System.Drawing.Size(136, 17);
             this.KeepPopulationBox.TabIndex = 7;
             this.KeepPopulationBox.Text = "Keep animal population";
-            this.toolTip1.SetToolTip(this.KeepPopulationBox, "Preserves dog progress.");
+            this.toolTip1.SetToolTip(this.KeepPopulationBox, "Preserves animal population on all maps.");
             this.KeepPopulationBox.UseVisualStyleBackColor = true;
             // 
             // KeepSettingsBox
@@ -411,14 +411,15 @@
             this.MiscTab.Text = "Misc";
             this.MiscTab.UseVisualStyleBackColor = true;
             // 
-            // VersionLabel
+            // ReportBugButtom
             // 
-            this.VersionLabel.AutoSize = true;
-            this.VersionLabel.Location = new System.Drawing.Point(5, 10);
-            this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(75, 13);
-            this.VersionLabel.TabIndex = 0;
-            this.VersionLabel.Text = "Version: X.X.X";
+            this.ReportBugButtom.Location = new System.Drawing.Point(8, 55);
+            this.ReportBugButtom.Name = "ReportBugButtom";
+            this.ReportBugButtom.Size = new System.Drawing.Size(75, 23);
+            this.ReportBugButtom.TabIndex = 2;
+            this.ReportBugButtom.Text = "Report Bug";
+            this.ReportBugButtom.UseVisualStyleBackColor = true;
+            this.ReportBugButtom.Click += new System.EventHandler(this.ReportBugButton_Click);
             // 
             // ChkUpdateButton
             // 
@@ -430,15 +431,14 @@
             this.ChkUpdateButton.UseVisualStyleBackColor = true;
             this.ChkUpdateButton.Click += new System.EventHandler(this.CheckForUpdatesButton_Click);
             // 
-            // ReportBugButtom
+            // VersionLabel
             // 
-            this.ReportBugButtom.Location = new System.Drawing.Point(8, 55);
-            this.ReportBugButtom.Name = "ReportBugButtom";
-            this.ReportBugButtom.Size = new System.Drawing.Size(75, 23);
-            this.ReportBugButtom.TabIndex = 2;
-            this.ReportBugButtom.Text = "Report Bug";
-            this.ReportBugButtom.UseVisualStyleBackColor = true;
-            this.ReportBugButtom.Click += new System.EventHandler(this.ReportBugButton_Click);
+            this.VersionLabel.AutoSize = true;
+            this.VersionLabel.Location = new System.Drawing.Point(5, 10);
+            this.VersionLabel.Name = "VersionLabel";
+            this.VersionLabel.Size = new System.Drawing.Size(75, 13);
+            this.VersionLabel.TabIndex = 0;
+            this.VersionLabel.Text = "Version: X.X.X";
             // 
             // MainForm
             // 
