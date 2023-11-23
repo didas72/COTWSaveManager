@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -156,11 +155,12 @@ namespace COTWSaveManager
 
             string path = Settings.Default.saveBasePath, lPath;
 
-            if (!KeepAny())
+            //TODO: Remove, commented for testing
+            /*if (!KeepAny())
             {
                 Directory.Delete(path, true);
                 return; 
-            }
+            }*/
 
             lPath = Path.Combine(path, "theHunter Call of the Wild");
 
@@ -169,7 +169,7 @@ namespace COTWSaveManager
                 if (Directory.Exists(lPath)) Directory.Delete(lPath, true);
             }
 
-            path = Path.Combine(path, "COTW");
+                path = Path.Combine(path, "COTW");
             if (!Directory.Exists(path))
                 return;
             path = Path.Combine(path, "Saves");
@@ -182,6 +182,11 @@ namespace COTWSaveManager
             if (paths.Length != 1) return; //FIXME: Error out
 
             path = paths[0];
+
+            if (!Settings.Default.keepSettings)
+            {
+                File.Delete(Path.Combine(path, "settings_adf"));
+            }
 
             if (!Settings.Default.keepAchieves)
             {
@@ -307,6 +312,31 @@ namespace COTWSaveManager
         {
 
         }*/
+        public static string ExportActiveSave()
+        {
+            string dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
+                Settings.Default.activeSave + DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss") + ".zip");
+
+            ZipFile.CreateFromDirectory(Settings.Default.saveBasePath, dest, CompressionLevel.Fastest, false, Encoding.Default);
+
+            return dest;
+        }
+        public static string ExportInactiveSave(string saveName)
+        {
+            string src = Path.Combine(Settings.Default.storePath, saveName + ".zip");
+            string dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
+                saveName + DateTime.Now.ToString("_yyyy_MM_dd_HH_mm_ss") + ".zip");
+
+            File.Copy(src, dest);
+
+            return dest;
+        }
+        public static void ImportSave(string src)
+        {
+            string dest = Path.Combine(Settings.Default.storePath, Path.GetFileName(src));
+
+            File.Copy(src, dest);
+        }
 
 
 
@@ -334,7 +364,7 @@ namespace COTWSaveManager
             string[] patterns = new string[] { 
                 "apex_notifications_adf", "codex_seen_status_adf", "collectibles_adf", "contextual_help_adf",
                 "hunting_log_adf", "leaderboard_adf", "regions_adf", "reserveworlddata_adf",
-                "settings_adf", "socialconfig", "statistics_adf", "trophy_lodges_adf", "worlditemsdata_adf"
+                "socialconfig", "statistics_adf", "trophy_lodges_adf", "worlditemsdata_adf"
             };
 
             string lPath = Path.Combine(path, "slots");

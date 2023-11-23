@@ -48,6 +48,8 @@
             this.SetActiveButton = new System.Windows.Forms.Button();
             this.SaveList = new System.Windows.Forms.ListBox();
             this.SaveNameInput = new System.Windows.Forms.TextBox();
+            this.bckpImportButton = new System.Windows.Forms.Button();
+            this.bckpExportButton = new System.Windows.Forms.Button();
             this.BackupList = new System.Windows.Forms.ListBox();
             this.BckpSaveList = new System.Windows.Forms.ListBox();
             this.SetStoreLocationButton = new System.Windows.Forms.Button();
@@ -64,6 +66,7 @@
             this.VersionLabel = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.folderDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             Tabs = new System.Windows.Forms.TabControl();
             SavesTab = new System.Windows.Forms.TabPage();
             DeleteButton = new System.Windows.Forms.Button();
@@ -176,6 +179,8 @@
             // 
             // BackupsTab
             // 
+            BackupsTab.Controls.Add(this.bckpImportButton);
+            BackupsTab.Controls.Add(this.bckpExportButton);
             BackupsTab.Controls.Add(BackupAllButton);
             BackupsTab.Controls.Add(bckpSetActiveButton);
             BackupsTab.Controls.Add(BackupDeleteButton);
@@ -189,6 +194,26 @@
             BackupsTab.TabIndex = 2;
             BackupsTab.Text = "Backups";
             BackupsTab.UseVisualStyleBackColor = true;
+            // 
+            // bckpImportButton
+            // 
+            this.bckpImportButton.Location = new System.Drawing.Point(388, 3);
+            this.bckpImportButton.Name = "bckpImportButton";
+            this.bckpImportButton.Size = new System.Drawing.Size(55, 23);
+            this.bckpImportButton.TabIndex = 10;
+            this.bckpImportButton.Text = "Import";
+            this.bckpImportButton.UseVisualStyleBackColor = true;
+            this.bckpImportButton.Click += new System.EventHandler(this.BackupImportButton_Click);
+            // 
+            // bckpExportButton
+            // 
+            this.bckpExportButton.Location = new System.Drawing.Point(327, 3);
+            this.bckpExportButton.Name = "bckpExportButton";
+            this.bckpExportButton.Size = new System.Drawing.Size(55, 23);
+            this.bckpExportButton.TabIndex = 9;
+            this.bckpExportButton.Text = "Export";
+            this.bckpExportButton.UseVisualStyleBackColor = true;
+            this.bckpExportButton.Click += new System.EventHandler(this.BackupExportButton_Click);
             // 
             // BackupAllButton
             // 
@@ -440,10 +465,15 @@
             this.VersionLabel.TabIndex = 0;
             this.VersionLabel.Text = "Version: X.X.X";
             // 
+            // openFileDialog
+            // 
+            this.openFileDialog.FileName = "openFileDialog";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(467, 450);
             this.Controls.Add(Tabs);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -488,6 +518,9 @@
         private System.Windows.Forms.Label VersionLabel;
         private System.Windows.Forms.Button ChkUpdateButton;
         private System.Windows.Forms.Button ReportBugButtom;
+        private System.Windows.Forms.Button bckpImportButton;
+        private System.Windows.Forms.Button bckpExportButton;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 }
 

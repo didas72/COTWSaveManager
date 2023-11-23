@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Diagnostics;
 using System.Net;
-using System.Threading.Tasks;
 
 using COTWSaveManager.Properties;
 
@@ -233,6 +232,44 @@ namespace COTWSaveManager
 
             UpdateBackupList();
         }
+        private void BackupExportButton_Click(object sender, EventArgs e)
+        {
+            if (BckpSaveList.SelectedIndex < 0 || BckpSaveList.SelectedIndex >= BckpSaveList.Items.Count)
+            {
+                MessageBox.Show("Please select a save to export.", "No save selected",
+                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                return;
+            }
+
+            string filePath;
+
+            if (BckpSaveList.SelectedIndex == 0)
+                filePath = SaveHelper.ExportActiveSave();
+            else
+                filePath = SaveHelper.ExportInactiveSave((string)BckpSaveList.Items[BckpSaveList.SelectedIndex]);
+
+            DialogResult res = MessageBox.Show("Save exported successfully. Show exported file?", "Export successful", MessageBoxButtons.YesNo);
+
+            if (res == DialogResult.Yes)
+                Process.Start("explorer.exe", $"/select,\"{filePath}\"");
+        }
+        private void BackupImportButton_Click(object sender, EventArgs e)
+        {
+            openFileDialog.CheckPathExists = true;
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            openFileDialog.Filter = "*.zip";
+            DialogResult result = openFileDialog.ShowDialog();
+
+            if (result != DialogResult.OK)
+                return;
+
+            SaveHelper.ImportSave(openFileDialog.FileName);
+
+            MessageBox.Show("Save imported successfully.", "Import successful", MessageBoxButtons.OK);
+
+            UpdateBackupList();
+        }
         #endregion
 
         #region Settings
@@ -324,7 +361,7 @@ namespace COTWSaveManager
             }
             else
             {
-                DialogResult res =MessageBox.Show("Newer version available. Open Nexus mod page?", "Update check",
+                DialogResult res =MessageBox.Show("Newer version available. Open Nexus mod page?", "Update available",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
                 if (res == DialogResult.Yes)
