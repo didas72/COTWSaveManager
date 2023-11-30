@@ -258,7 +258,7 @@ namespace COTWSaveManager
         {
             openFileDialog.CheckPathExists = true;
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            openFileDialog.Filter = "*.zip";
+            openFileDialog.Filter = "COTW Backups (*.zip)|*.zip";
             DialogResult result = openFileDialog.ShowDialog();
 
             if (result != DialogResult.OK)
