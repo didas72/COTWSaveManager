@@ -1,7 +1,7 @@
 # COTWSaveManager
 
 COTWSaveManager is a simple tool for the game theHunter: Call of the Wild that allows you to keep multiple game saves without having to move any files yourself.
-The tool available in Nexus Mods: https://www.nexusmods.com/thehuntercallofthewild/mods/268
+The tool available in [Nexus Mods](https://www.nexusmods.com/thehuntercallofthewild/mods/268)
 
 # Installation
 
